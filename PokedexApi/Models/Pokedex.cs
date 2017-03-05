@@ -11,7 +11,7 @@ namespace PokedexApi.Models
     public class Pokedex : IPokedex
     {
         private readonly PokedexContext _context;
-        
+
         /// <summary>
         /// Creates Pokedex Context & create default pokemon.
         /// </summary>
@@ -19,12 +19,7 @@ namespace PokedexApi.Models
         public Pokedex(PokedexContext context)
         {
             _context = context;
-            Add(new Pokemon {
-                Id = 1,
-                Name = "bulbasaur",
-                Type = "grass",
-                IsCaught = false,
-            });
+            Add(new Pokemon { Id = 1, Name = "bulbasaur", Type = "grass", IsCaught = false });
         }
 
         /// <summary>
@@ -34,6 +29,7 @@ namespace PokedexApi.Models
         public void Add(Pokemon pokemon)
         {
             _context.Pokemons.Add(pokemon);
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -66,12 +62,24 @@ namespace PokedexApi.Models
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Updates Pokemon information.
+        /// </summary>
+        /// <param name="pokemon">pokemon item that is updated.</param>
         public void Update(Pokemon pokemon)
         {
             _context.Pokemons.Update(pokemon);
             _context.SaveChanges();   
         }
 
+        /// <summary>
+        /// Finds the next available index of the pokemon list.
+        /// </summary>
+        /// <returns>Next available index</returns>
+        public int NextIndex()
+        {
+            return _context.Pokemons.Count();
+        }
 
 
     }
